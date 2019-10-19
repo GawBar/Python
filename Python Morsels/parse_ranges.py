@@ -1,25 +1,19 @@
-﻿def parse_ranges(arg):
-    output = []
-    arg = arg.replace(' ', '')
-    ranges = [x.split('-') for x in arg.split(',')]
-    for rang in ranges:
-      try:
-        if len(rang) == 1:
-          tmp = int(rang[0])
-          output.append(rang[0])
-          #yield rang[0]
-        else:
-          tmp0 = int(rang[0])
-          tmp1 = int(rang[1])
-          for x in range(rang[0], rang[1]+1):
-            #yield x
-            output.append(x)
-      except ValueError:
-        
-    return output
-
-t1 = parse_ranges('1-2,4-4,8-10')
-print(str(t1) + '\n' + '[1, 2, 4, 8, 9, 10]')
-t2 = parse_ranges('0-0, 4-8, 20, 43-45')
-print(str(t2) + '\n' + '[0, 4, 5, 6, 7, 8, 20, 43, 44, 45]')
-t3 = parse_ranges('0, 4-8, 20->exit, 43-45')
+def parse_ranges(ranges):
+    # range: ['1-2,3-4,5-6']
+    # split string of ranges to list of bounds
+    for bounds in ranges.split(","):
+        # bounds: ['1-2', '3-4', '5-6']
+        # split bounds to single bound 
+        bound = bounds.split("-")
+        # bound: ['1', '2']
+        bound_start = int(bound[0])
+        # bound_start: 1
+        try:
+            bound_end = int(bounds[1])
+            # bound_end: 2 except it is not numeric string
+        except (IndexError, ValueError):
+            bound_end = bound_start
+            # bound_end: 1
+        for val in range(bound_start, bound_end + 1):
+            # generator
+            yield val
